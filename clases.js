@@ -15,31 +15,13 @@
  */
 
  class Ropa {
-    constructor(tipo, nombre, medidas, color, material, tieneBotones=false) {
-        this.tipo = tipo,
-        this.nombre = nombre,
-        this.medidas = medidas,
+    constructor(color, material, marca) {
         this.color = color,
         this.material = material,
-        this.tieneBotones = tieneBotones
+        this.marca = marca,
         this.materialesLavables= ["algodon", "jean", "jersey", "poliester"];
-
     }
     
-    calzar () {
-        if (this.tipo !== "calzado") {
-            throw "No se puede calzar algo que no es un calzado, genix"
-        }
-        return "Te calzaste"
-    };
-
-    abotonar () {
-        if (this.tieneBotones==false) {
-            throw "No podés abotonar algo que no tiene botones lol" 
-        }
-       return `Te abotonaste tu ${this.nombre}`
-    }
-
     lavarEnLavarropas() {
         if (this.materialesLavables.indexOf(this.material) == -1){
             throw `Se te va a hacer percha si metes tu ${this.nombre} en el lavarropas`
@@ -53,12 +35,93 @@
         }
         return "Planchalo"
     }
+}
+
+ /**
+  * Transformar los distintos tipos de ropa
+  * del ejercicio anterior a nuevas clases
+  * que extiendan de la clase principal.
+  */
+
+class Calzado extends Ropa{
+    constructor(talle, color, material, marca,tieneCordones){
+        super(color, material,marca);
+        this.cordones = {
+            tiene: tieneCordones, 
+            atados: false};
+        this.talle = talle;
+    } 
+
+    calzar () {
+        return "Te calzaste"
+    };
+
+    atarCordones () {
+        if (this.cordones.tiene==false || this.cordones.atados==true){
+            throw "Este calzado no puede ser atado"
+        }
+        return "Te ataste los cordones"
+    }
+}
+
+class Bottom extends Ropa {
+    constructor(color, material, marca, talle){
+        super(color, material, marca);
+        this.talle = talle;
+    } 
+}
+
+class Falda extends Bottom {
+    constructor(color, material, marca, talle, tipo, largo){
+        super(color, material, marca, talle);
+        this.tiposDeFalda = ["A-line", "recta", "campana", "lápiz"]
+        this.tipo="";
+        if (this.tiposDeFalda.indexOf(tipo)==-1){
+            throw "No es un tipo de falda válido"
+        } else {
+            this.tipo=tipo;
+        }
+        this.largo=largo;     
+    }
+}
+
+class Pantalon extends Bottom {
+    constructor(color, material, marca, talle, largo){
+        super(color, material, marca, talle);
+        this.largosDePantalon = ["shorts", "pescadores", "largos"];
+        this.largo="";
+        if  (this.largosDePantalon.indexOf(largo)==-1){
+            throw "No es un largo válido"
+        } else {
+            this.largo=largo;
+        }
+
+        poner() {
+            return "Te pusiste el pantalon"
+        }
 
 
-
+    }
 }
 
 
+class Top extends Ropa {
+    constructor(color, material, marca, talle){
+        super(color, material, marca);
+        this.talle = talle;
+    } 
+    
+}
+
+
+
 module.exports = {
-    Ropa
+    Ropa,
+    Calzado,
+    Bottom,
+    Top,
+    Falda,
+    Pantalon,
+
  }
+
