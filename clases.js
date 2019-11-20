@@ -12,9 +12,9 @@
  * funcione si es una zapatilla.
  * 
  * Crear varios tipos distintos de ropa.
- */
+*/
 
- class Ropa {
+class Ropa {
     constructor(color, material, marca) {
         this.color = color,
         this.material = material,
@@ -37,11 +37,11 @@
     }
 }
 
- /**
+/**
   * Transformar los distintos tipos de ropa
   * del ejercicio anterior a nuevas clases
   * que extiendan de la clase principal.
-  */
+*/
 
 class Calzado extends Ropa{
     constructor(talle, color, material, marca,tieneCordones){
@@ -95,23 +95,45 @@ class Pantalon extends Bottom {
         } else {
             this.largo=largo;
         }
-
-        poner() {
-            return "Te pusiste el pantalon"
-        }
-
-
+    }
+    
+    poner() {
+        return "Te pusiste el pantalon"
     }
 }
-
 
 class Top extends Ropa {
     constructor(color, material, marca, talle){
         super(color, material, marca);
         this.talle = talle;
-    } 
-    
+    }    
 }
+
+class Remera extends Top {
+    constructor(color, material, marca, talle, mangas){
+        super(color, material, marca, talle);
+        this.mangas=mangas;
+    }
+}
+
+class Camisa extends Top {
+    constructor(color, material, marca, talle, mangas, abotonada=false){
+        super(color, material, marca, talle);
+        this.mangas=mangas;
+        this.abotonada = abotonada;
+    }
+
+    abotonar() {
+        if (this.abotonada==true){
+            throw "Ya está abotonada"
+        }
+        return "Te abotonaste la camisa"
+    }
+}
+
+
+
+
 
 
 
@@ -122,6 +144,7 @@ module.exports = {
     Top,
     Falda,
     Pantalon,
+    Camisa,
 
  }
 
