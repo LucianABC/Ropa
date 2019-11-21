@@ -131,12 +131,6 @@ class Camisa extends Top {
     }
 }
 
-
-
-
-
-
-
 module.exports = {
     Ropa,
     Calzado,
