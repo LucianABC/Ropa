@@ -33,16 +33,51 @@
  * de compras y el calculo final del precio tiene que tomar
  * en cuenta esto.
 */
+const carritoDeCompras= {
+   _carrito: [ ],
+    _ticket: 0,
+    cupon: null,
+    agregarProductos(id){
+        for (let producto of listaProductos.lista){
+            if (producto.id == id){
+                this._carrito.push(producto);
+            }
+        }
+    },
 
+    borrarProducto (id) {
+        let index = this._carrito.findIndex((producto)=>{
+            return producto.id == ID;
+        });
+        this._carrito.splice(index, 1);
+    },
+
+    get carrito () {
+        let carrito = [ ];
+        for (let producto of this._carrito) {
+            carrito.push(producto.infoProd)
+        }
+        return carrito
+    },
+
+    asignarDescuento (descuento) {
+        this.cupon = new Cupon (descuento);
+    },
+
+    get ticket () {
+        let ticket= 0;
+        for (let producto of this._carrito){
+            ticket += producto.precioConDescuento;
+        }
+        
+        return this.cupon.aplicarDescuento(ticket);
+    }
+}
 
 const listaProductos = {
     lista: [],
     agregarProductos(producto){
         this.lista.push(producto);
-    },
-    
-    eliminarProductos(id){
-
     },
     
     buscarProducto(id){
@@ -53,7 +88,7 @@ const listaProductos = {
         }
     },
 
-    modificarPrecio(id, newPrsice){
+    modificarPrecio(id, newPrice){
         for (let producto of this.lista) {
             if (producto.id == id){
                 producto.precio = newPrice;
@@ -73,54 +108,72 @@ const listaProductos = {
 }
 
 class Producto {
-     constructor (id, marca, precio){
+     constructor (id, marca, precio, descuento){
         this.id= id;
         this.marca = marca;
         this.precio = precio;
-        this.descuentosDisponibles = [10,15,25,30]
+        this.descuento = (descuento*this.precio)/100;
+        this.precioConDescuento = this.precio - this.descuento;
         listaProductos.agregarProductos(this)
-    }
-
-    aplicarDescuento (descuento) {
-        if(this.descuentosDisponibles.indexOf(descuento)==-1){
-            throw "No es un descuento disponible"
-        }
-        descuento = (descuento*this.precio)/100;
-        let precioConDescuento = this.precio - descuento;
-        return precioConDescuento
     }
 }
 
 class Perfume extends Producto {
-    constructor(id, marca, precio, fragancia){
-        super(id, marca, precio),
-        this.fragancia = fragancia
+    constructor(id, marca, precio, descuento,fragancia){
+        super(id, marca, precio, descuento),
+        this.fragancia= fragancia
     }
+
+    get infoProd () {
+        return `${this.id} - Perfume ${this.marca}, fragancia de ${this.fragancia}. Precio de lista: ${this.precio} Precio con descuento: ${this.precioConDescuento}`
+     };
 }
 
+
+
 class Chocolate extends Producto {
-    constructor(id, marca, nombre, precio,  porcentaje, leche, tipo, extras){
-        super(id, marca, precio),
+    constructor(id, marca, nombre, precio, descuento, porcentaje, leche, tipo, extras){
+        super(id, marca, precio, descuento),
         this.nombre = nombre,
         this.porcentaje=porcentaje,
         this.leche=leche,
         this.tipo=tipo,
         this.extras=extras
     }
+
+    get infoProd () {
+        let tieneLeche = "con"
+        if (this.leche==false){
+            tieneLeche="sin"
+        } 
+        return ` ${this.id} - Chocolate ${this.marca} ${this.nombre}, ${this.porcentaje} de cacao, ${tieneLeche} leche, con ${this.extras}. Precio de lista: ${this.precio} Precio con descuento: ${this.precioConDescuento}`
+     };
 }
 
 class Auriculares extends Producto {
-    constructor(id, marca, modelo, precio, wireless, tipo){
-        super(id, marca, precio),
+    constructor(id, marca, modelo, precio, descuento, wireless, tipo){
+        super(id, marca, precio, descuento),
         this.modelo = modelo,
         this.wireless=wireless,
         this.tipo=tipo
     }
+
+    get infoProd () {
+        let esWireless = "";
+        if (this.wireless==true){
+            esWireless = "wireless"
+        }
+        return `${this.id} - Auriculares ${this.marca}, modelo ${this.modelo} ${esWireless}, ${this.tipo}. Precio de lista: ${this.precio} Precio con descuento: ${this.precioConDescuento}`
+     };
 }
 
 class Cupon {
-    constructor (){
-        this.descuento = 0;
+    constructor (descuento){
+        this.descuento = descuento;
+    }
+    aplicarDescuento(precio) {
+        precio -= (this.descuento*precio)/100;
+        return precio
     }
 }
 
@@ -131,5 +184,6 @@ module.exports  = {
     Chocolate,
     Auriculares,
     Cupon,
-    listaProductos
+    listaProductos,
+    carritoDeCompras
 }
