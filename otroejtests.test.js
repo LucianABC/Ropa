@@ -10,6 +10,8 @@ const carritoDeCompras = productos.carritoDeCompras;
 
 beforeEach (() => {
     listaProductos.lista = [];
+    carritoDeCompras._carrito= [];
+    
     
 });
 
@@ -55,3 +57,21 @@ test('que me tire el precio final de toda la compra con el descuento y toda la b
 });
 
 
+test('agregar prods al carrito formateado', ()=>{
+    const perfume1 = new Perfume(99,"Kenzo", 500, 0, "Rosas",);
+    const auriculares1 = new Auriculares (88,"Samson","T-1000", 2000, 0, true, "cerrados");
+    carritoDeCompras.agregarProductos(99)
+    carritoDeCompras.agregarProductos(88)
+    expect(carritoDeCompras.carrito[1]).toBe("88 - Auriculares Samson, modelo T-1000 wireless, cerrados. Precio de lista: 2000 Precio con descuento: 2000");
+});
+
+test('borrar productos del carrito', ()=>{
+    const perfume1 = new Perfume(99,"Kenzo", 500, 0, "Rosas",);
+    const auriculares1 = new Auriculares (88,"Samson","T-1000", 2000, 0, true, "cerrados");
+    carritoDeCompras.agregarProductos(99);
+    carritoDeCompras.agregarProductos(88);
+    let previousLength= carritoDeCompras.carrito.length;
+    carritoDeCompras.borrarProducto(88);
+
+    expect(previousLength).toBeGreaterThan(carritoDeCompras.carrito.length)
+});

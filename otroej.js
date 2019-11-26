@@ -47,7 +47,7 @@ const carritoDeCompras= {
 
     borrarProducto (id) {
         let index = this._carrito.findIndex((producto)=>{
-            return producto.id == ID;
+            return producto.id == id;
         });
         this._carrito.splice(index, 1);
     },
@@ -128,8 +128,6 @@ class Perfume extends Producto {
         return `${this.id} - Perfume ${this.marca}, fragancia de ${this.fragancia}. Precio de lista: ${this.precio} Precio con descuento: ${this.precioConDescuento}`
      };
 }
-
-
 
 class Chocolate extends Producto {
     constructor(id, marca, nombre, precio, descuento, porcentaje, leche, tipo, extras){
